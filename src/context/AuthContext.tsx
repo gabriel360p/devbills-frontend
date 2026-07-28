@@ -42,9 +42,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setAuthState((prev) => ({ ...prev, loading: true }))
 
         try {
-            const response = await signInWithPopup(firebaseAuth, googleAuthProvider)
+            await signInWithPopup(firebaseAuth, googleAuthProvider)
         } catch (err) {
-            setAuthState((prev) => ({ ...prev, loading: false, error: err }))
+            setAuthState((prev) => ({ ...prev, loading: false, error: err instanceof Error ? err.message : "Não foi possível entrar com o Google." }))
         }
     }
     const signOut = async (): Promise<void> => {
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             })
 
         } catch (err) {
-            setAuthState((prev) => ({ ...prev, loading: false, error: err }))
+            setAuthState((prev) => ({ ...prev, loading: false, error: err instanceof Error ? err.message : "Não foi possível sair da conta." }))
 
         }
     }
@@ -114,7 +114,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     )
 }
 
-export const useAuth = () => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAuth = (): AuthContextProps => {
     //exportando o useContext useAuth()
     //tornando o nosso AuthContext um context de fato
     const context = useContext(AuthContext)

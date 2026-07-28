@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 import { useId, type ReactNode, type SelectHTMLAttributes } from "react";
 
 interface SelectOptions {

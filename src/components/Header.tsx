@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
-import { ActivityIcon, HamburgerIcon, LogIn, LogOut, LogOutIcon, Menu, X } from "lucide-react";
+import { ActivityIcon, LogIn, LogOutIcon, Menu, X } from "lucide-react";
 interface NavLink {
     name: string;
     path: string;

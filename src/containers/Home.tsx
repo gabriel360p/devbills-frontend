@@ -6,7 +6,6 @@
 import type { JSX } from "react/jsx-runtime";
 import Button from "../components/Button";
 import { Wallet, TrendingUp, List, CreditCard } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 //tipando objeto feature

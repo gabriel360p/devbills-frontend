@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
-import { Api } from "../services/Api";
 import MonthYearSelect from "../components/MonthYearSelect";
 import { getTransactionsMonthly, getTransactionsSummary } from "../routes/transactionService";
 import type { MonthlyItem, TransactionSummary } from "../types/transactions";
 import Card from "../components/Card";
-import { ArrowUp, Calendar, Car, TrendingUp, Wallet } from "lucide-react";
+import { ArrowUp, Calendar, TrendingUp, Wallet } from "lucide-react";
 import { formatCurrency } from "../utils/formatter";
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, CartesianGrid, XAxis, YAxis, Legend, Bar, Rectangle } from "recharts";
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, CartesianGrid, XAxis, YAxis, Legend, Bar, type PieLabelRenderProps, type TooltipValueType } from "recharts";
 
-
-
-interface ChartLabelProps {
-    categoryName: string;
-    percent: number;
-}
 
 
 const Dashboard = () => {
@@ -54,12 +47,12 @@ const Dashboard = () => {
         } loadTransactionSummary()
     }, [month, year])
 
-    const rederPieChatLabel = ({ categoryName, percent }: ChartLabelProps): string => {
-
-        return `${categoryName}: ${(percent * 100).toFixed(1)}%`
+    const renderPieChartLabel = ({ payload, percent }: PieLabelRenderProps): string => {
+        const categoryName = (payload as { categoryName?: string } | undefined)?.categoryName ?? "Categoria";
+        return `${categoryName}: ${((percent ?? 0) * 100).toFixed(1)}%`
     }
 
-    const formatToolTipValue = (value: number | string): string => {
+    const formatToolTipValue = (value: TooltipValueType | undefined): string => {
         return formatCurrency(typeof value === "number" ? value : 0)
     }
 
@@ -110,7 +103,7 @@ const Dashboard = () => {
                                             cy="50%"
                                             outerRadius={80}
                                             dataKey="amount"
-                                            label={rederPieChatLabel}
+                                            label={renderPieChartLabel}
                                             nameKey={"categoryName"}
                                         >
                                             {summary.expesesByCategory.map(entry => (
@@ -159,7 +152,7 @@ const Dashboard = () => {
                                     <Tooltip />
                                     <Legend />
                                     <Bar
-                                        dataKey="expense"
+                                        dataKey="expenses"
                                         name={"Despesas"}
                                         fill="#FF6384" />
                                     <Bar dataKey="income"

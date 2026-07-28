@@ -39,7 +39,7 @@ body{
 
 /* //criando estilos padrão que eu qeuro */
 .container-app{
-    @apply max-w-7xl mx-auto px-    4
+    @apply max-w-7xl mx-auto px-4
 }
 @keyframes glow{
     0%{

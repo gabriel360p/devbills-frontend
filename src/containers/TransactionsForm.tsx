@@ -19,7 +19,7 @@ interface FormData {
     categoryId: string;
     type: TransactionType;
 }
-const initialFormData = {
+const initialFormData: FormData = {
     description: "",
     amount: 0,
     date: "",
@@ -29,7 +29,6 @@ const initialFormData = {
 const TransactionsForm = () => {
 
     const [categories, setCategories] = useState<Category[]>([])
-    const [error, setError] = useState<string | null>(null)
     const [formData, setFormData] = useState<FormData>(initialFormData)
     const formId = useId()
     const navigate = useNavigate()
@@ -37,12 +36,10 @@ const TransactionsForm = () => {
 
     const validateForm = (): boolean => {
         if (!formData.description || !formData.amount || !formData.date || !formData.categoryId) {
-            setError("Preencha todos os campos");
             return false
 
         }
         if (formData.amount <= 0) {
-            setError("O valor deve ser maior que zero");
             return false
         }
 
@@ -53,23 +50,21 @@ const TransactionsForm = () => {
         setFormData((prev) => ({ ...prev, type: itemType }))
     }
 
-    async function handleChange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>): Promise<void> {
+    function handleChange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
         const { name, value } = event.target;
-        setFormData((prev) => ({ ...prev, [name]: value }))
+        setFormData((prev) => ({ ...prev, [name]: name === "amount" ? Number(value) : value }))
     }
 
-    async function handleSubmit(event: SubmitEvent): Promise<void> {
+    async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
         event.preventDefault() //impedindo que o submit de um reload na tela
-        setError(null)
-
         try {
             if (!validateForm()) {
-                toast.error(error)
+                toast.error("Preencha todos os campos corretamente")
                 return
             }
             const transactionData: CreateTransactionDataDTO = {
                 description: formData.description,
-                amount: Number.parseFloat(formData.amount),
+                amount: formData.amount,
                 categoryId: formData.categoryId,
                 type: formData.type,
                 date: `${formData.date}T12:00:00.000Z`,

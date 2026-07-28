@@ -65,7 +65,7 @@ const MonthYearSelect = ({
 
                 <label htmlFor="year-select" className="sr-only">Selecionar Ano</label>
                 <select onChange={(event) => onYearChange(Number(event.target.value))} value={year} className="bg-gray-800 cursor-pointer border-gray-700 rounded-md px-3 py-2 text-sm font-medium text-gray-100 focus: outline-none focus:ring-1" name="" id="year-select">
-                    {years.map((year, index) => (
+                    {years.map(year => (
                         <option value={year} key={year}>{year}</option>
                     ))}
                 </select>

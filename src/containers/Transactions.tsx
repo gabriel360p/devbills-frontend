@@ -1,11 +1,10 @@
 import { AlertCircle, ArrowDown, ArrowUp, LoaderCircle, Plus, Search, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import MonthYearSelect from "../components/MonthYearSelect";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import Input from "../components/Input";
 import Card from "../components/Card";
 import { TransactionType, type Transaction } from "../types/transactions";
-import { Api } from "../services/Api";
 import { deleteTransaction, getTransactions } from "../routes/transactionService";
 import Button from "../components/Button";
 import { formatCurrency, formatData } from "../utils/formatter";
@@ -31,6 +30,7 @@ const Transactions = () => {
             //os dois jeitos funciona, o primeiro eu fiz sozinho o segundo foi o rodolfo, ele mostrou que pra puxar os dados anteriores do state com uma arrow function
             // setTransactions((transactions.filter(transactions => transactions.id !== id)))
             setFilteredTransactions(((PuxandoTodasAsTransacoesAnteriores: Transaction[]) => PuxandoTodasAsTransacoesAnteriores.filter(transacao => transacao.id !== id)))
+            setTransactions((previousTransactions) => previousTransactions.filter(transaction => transaction.id !== id))
             toast.success("Transação apagada!")
 
         } catch (error) {
@@ -58,7 +58,7 @@ const Transactions = () => {
     }
 
 
-    async function loadTransactions(): Promise<void> {
+    const loadTransactions = useCallback(async (): Promise<void> => {
         try {
             setLoading(true)
             setError("")
@@ -72,12 +72,13 @@ const Transactions = () => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [month, year])
 
     useEffect(() => {
+        // O estado é atualizado somente após a resposta assíncrona da API.
         // eslint-disable-next-line react-hooks/set-state-in-effect
         loadTransactions()
-    }, [month, year])
+    }, [loadTransactions])
 
     return (
         <div className="container-app py-6">
@@ -176,12 +177,12 @@ const Transactions = () => {
 
                                         <td className="py-3 px-2 whitespace-nowrap">
                                             <div className="flex items-center">
-                                                <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: transaction.Category.color }}
+                                                <div className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: transaction.category.color }}
                                                 >
 
                                                 </div>
                                                 <span className="text-sm font-medium text-gray-50">
-                                                    {transaction.Category.name}
+                                                    {transaction.category.name}
                                                 </span>
                                             </div>
                                         </td>

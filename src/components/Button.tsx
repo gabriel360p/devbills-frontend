@@ -4,7 +4,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react"
 
 //criando tipagem, o nosso botão vai receber uma dessas variantes, só aceita essas
-type ButtonVariants = "primary" | "oultine" | "secondary" | "success" | "danger"
+type ButtonVariants = "primary" | "outline" | "secondary" | "success" | "danger"
 
 
 //aqui a gente esta "jutando" as informações de tipagem padrão e as nossas modificações
@@ -29,7 +29,7 @@ const Button = ({
 }: ButtonProps) => {
 
     const variantClasses = {
-        primary: "bg-primary-500 text-[#051626] font-semibold hover:bg-primary-600 active:trasnlate-y-0",
+        primary: "bg-primary-500 text-[#051626] font-semibold hover:bg-primary-600 active:translate-y-0",
         outline: "border border-primary-500 text-primary-500 hover:bg-primary-500/10 ",
         secondary: "bg-gray-800 text-white hover:bg-gray-700",
         success: "bg-green-500 text-[#051626] hover:brightness-90",

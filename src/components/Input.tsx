@@ -1,5 +1,4 @@
-import type { InputHTMLAttributes, MouseEventHandler, ReactNode } from "react";
-import { Link } from "react-router-dom";
+import type { InputHTMLAttributes, ReactNode } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     placeholder?: string,
